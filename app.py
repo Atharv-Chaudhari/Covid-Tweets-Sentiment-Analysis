@@ -7,18 +7,8 @@ import nltk
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import stopwords
 nltk.download('stopwords')
-from flask import Flask, render_template, request, send_from_directory, after_this_request, Response, stream_with_context, make_response
-import os
-import sys
 
-
-root_path = os.path.abspath(__file__)
-root_path = '/'.join(root_path.split('/')[:-2])
-sys.path.append(root_path)
-
-
-app = Flask(__name__, static_folder="../static",
-            template_folder="../templates")
+app = Flask(__name__)
 
 @app.route("/")
 def home():
@@ -27,26 +17,25 @@ def home():
 @app.route("/", methods = ['POST','GET'])
 def predict():
     if request.method == "POST":
-        sms = [x for x in request.form.values()][0]
-        print(type(sms))
+        tweet = [x for x in request.form.values()][0]
         # Data Cleaning
-        sms = re.sub('[^a-zA-Z]', ' ', sms) 
-        sms = sms.lower()
-        sms = sms.split()
+        tweet = re.sub('[^a-zA-Z]', ' ', tweet) 
+        tweet = tweet.lower()
+        tweet = tweet.split()
 
         # Stemming and Generating Corpus
         user_corpus = []
         ps = PorterStemmer()
-        sms = [ps.stem(word) for word in sms if not word in stopwords.words('english')]
-        sms = ' '.join(sms)
-        user_corpus.append(sms)
+        tweet = [ps.stem(word) for word in tweet if not word in stopwords.words('english')]
+        tweet = ' '.join(tweet)
+        user_corpus.append(tweet)
 
         # Applying Count Vectorizer to Corpus
-        tfidf = pickle.load(open('Phase 4/vectorizer.pkl', 'rb'))
-        x = tfidf.transform(user_corpus)
+        cv = pickle.load(open('vectorizer.pkl', 'rb'))
+        x = cv.transform(user_corpus)
 
         # Loading ML Model
-        log_model = pickle.load(open('Phase 4/log_model.pkl','rb'))
+        log_model = pickle.load(open('log_model.pkl','rb'))
         result = log_model.predict(x)[0]
         if result == 1:
             res = "Positive"
