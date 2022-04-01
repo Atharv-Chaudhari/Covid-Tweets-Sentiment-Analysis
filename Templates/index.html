@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Covid NLP</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/Atharv-Chaudhari/Project-Covid/main/gitpage_images/website_logo.png">
+    <link rel="stylesheet" href="static/index.css">
+</head>
+<body>
+    <div class="container-main">
+        <!-- <h1 style="text-align: center;color:blue;"> Tweet Sentiment Analysis </h1> -->
+        <br>
+        <h3 style="text-align: center;color:red;"> Tweet Sentiment Analysis </h3>
+        <br>
+        <div class="container-nlp">
+            <form class="form" action="#" method="POST">
+                <textarea class="form__field" name="tweet" placeholder="Enter Tweet Here..." required></textarea>
+                <br><br>
+                <button type="submit" class="btn--primary">Submit</button>
+                <br><br>{{csrf_token }}
+            </form>
+        </div>
+        <br><br>
+    </div>
+</body>
+</html>
